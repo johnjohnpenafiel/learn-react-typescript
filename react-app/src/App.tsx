@@ -14,7 +14,7 @@ function App() {
             setAlertVisible(false);
           }}
         >
-          My Alert
+          Alert
         </Alert>
       )}
       <Button onClick={() => setAlertVisible(true)}>Alert</Button>
