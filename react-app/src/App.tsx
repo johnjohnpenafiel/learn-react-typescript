@@ -1,39 +1,23 @@
-import { useState } from "react";
-
-import Alert from "./components/Alert";
-import Button from "./components/Button";
-import ListGroup from "./components/ListGroup/ListGroup";
+import ExpandableText from "./components/ExpandableText";
 
 function App() {
-  const [cart, setCart] = useState({
-    discount: 0.1,
-    items: [
-      { id: 1, title: "Product 1", quantity: 1 },
-      { id: 2, title: "Product 2", quantity: 1 },
-    ],
-  });
-
-  const handleClick = () => {
-    const addProduct = {
-      ...cart,
-      items: cart.items.map((item) =>
-        item.id === 1 ? { ...item, quantity: item.quantity + 1 } : item
-      ),
-    };
-    setCart(addProduct);
-  };
-
   return (
     <>
-      <h1>Items</h1>
-      <ul>
-        {cart.items.map((item) => (
-          <li key={item.id}>
-            Name:{item.title} Quanity:{item.quantity}
-          </li>
-        ))}
-      </ul>
-      <button onClick={handleClick}>Add Product</button>
+      <ExpandableText>
+        In a quiet village nestled between towering mountains, lived a young
+        girl named Elara who dreamed of touching the sky. Every evening, she
+        would climb the tallest hill and reach out, her fingers grazing the
+        clouds in her imagination. One day, a great storm rolled in, and the
+        villagers sought shelter. But Elara stood firm on her hill, her heart
+        filled with determination. As the wind howled, a brilliant flash of
+        lightning illuminated the sky, revealing a hidden path made of glowing
+        stones leading upwards. Without hesitation, Elara followed it, climbing
+        higher and higher until she found herself standing among the stars. The
+        storm subsided, and Elara returned, her hands filled with stardust. From
+        that day on, the village prospered, for Elara had brought back a piece
+        of the sky, reminding everyone that dreams, no matter how lofty, could
+        become reality.
+      </ExpandableText>
     </>
   );
 }
