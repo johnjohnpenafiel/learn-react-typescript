@@ -1,11 +1,23 @@
 import { FieldValues, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  name: z.string().min(3, { message: "Name must beat least 3 charcters." }),
+  age: z
+    .number({ invalid_type_error: "Age field is required." })
+    .min(18, { message: "Age must be at least 18." }),
+});
+
+type FormData = z.infer<typeof schema>;
 
 function Form() {
-  // You can check the attributes by logging the object
-  const form = useForm();
-  console.log(form);
-
-  const { register, handleSubmit } = useForm();
+  // Nested destructuring in formState
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
   const onSubmit = (data: FieldValues) => console.log(data);
 
   return (
@@ -15,22 +27,26 @@ function Form() {
           Name
         </label>
         <input
+          // standard html attributes for data validation
           {...register("name")}
           id="name"
           type="text"
           className="form-control"
         />
+        {/* we use "optional" ? because if the input is empty it will be ignored */}
+        {errors.name && <p className="text-danger">{errors.name.message}</p>}
       </div>
       <div className="mb-3">
         <label htmlFor="age" className="form-label">
           Age
         </label>
         <input
-          {...register("age")}
+          {...register("age", { valueAsNumber: true })}
           id="age"
           type="number"
           className="form-control"
         />
+        {errors.age && <p className="text-danger">{errors.age.message}</p>}
       </div>
       <button className="btn btn-primary" type="submit">
         Submit
