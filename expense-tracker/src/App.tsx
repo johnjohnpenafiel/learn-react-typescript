@@ -33,6 +33,7 @@ function App() {
         <ExpenseForm onSubmit={handleSubmit} />
       </div>
       <div className="mb-3">
+        Code
         <ExpenseFilter
           onSelectCategory={(category) => {
             setSelectedCategory(category);
