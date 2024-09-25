@@ -15,8 +15,8 @@ function App() {
 
   useEffect(() => {
     const controller = new AbortController();
-
     setIsLoading(true);
+
     axios
       .get<User[]>("https://jsonplaceholder.typicode.com/users")
       .then((res) => {
@@ -32,13 +32,27 @@ function App() {
     return () => controller.abort();
   }, []);
 
+  const deleteUser = (user: User) => {
+    const originalUsers = [...users];
+    setUsers(users.filter((u) => u.id !== user.id));
+
+    axios
+      .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
+      .catch((err) => {
+        setErrors(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
   return (
     <>
       {errors && <p>{errors}</p>}
       {isLoading && "loading..."}
       <ul>
         {users.map((user) => (
-          <li key={user.id}>{user.name}</li>
+          <li key={user.id}>
+            {user.name} <button onClick={() => deleteUser(user)}>Delete</button>
+          </li>
         ))}
       </ul>
     </>
