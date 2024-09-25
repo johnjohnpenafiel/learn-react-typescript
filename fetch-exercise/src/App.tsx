@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import apiClient, { CanceledError } from "./services/api-client";
+import { CanceledError } from "./services/api-client";
+import UserService, { User } from "./services/user-service";
 
 import "./App.css";
-import UserService, { User } from "./services/user-service";
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -30,7 +30,7 @@ function App() {
     const originalUsers = [...users];
     setUsers(users.filter((u) => u.id !== user.id));
 
-    apiClient.delete("/users/" + user.id).catch((err) => {
+    UserService.deleteUser(user.id).catch((err) => {
       setErrors(err.message);
       setUsers(originalUsers);
     });
@@ -40,8 +40,7 @@ function App() {
     const newUser = { id: 0, name: "John" };
     const originalUsers = [...users];
 
-    apiClient
-      .post("/users", newUser)
+    UserService.createUser(newUser)
       .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((err) => {
         setErrors(err.message);
@@ -54,7 +53,7 @@ function App() {
     const updatedUser = { ...user, name: user.name + "!" };
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
-    apiClient.patch("/users/" + user.id, updatedUser).catch((err) => {
+    UserService.editUser(updatedUser).catch((err) => {
       setErrors(err.message);
       setUsers(originalUsers);
     });
