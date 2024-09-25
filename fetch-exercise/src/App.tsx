@@ -44,10 +44,23 @@ function App() {
       });
   };
 
+  const addUser = () => {
+    const newUser = { id: 0, name: "John" };
+    const originalUsers = [...users];
+    axios
+      .post("https://jsonplaceholder.typicode.com/users", newUser)
+      .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
+      .catch((err) => {
+        setErrors(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
   return (
     <>
       {errors && <p>{errors}</p>}
       {isLoading && "loading..."}
+      <button onClick={addUser}>Add</button>
       <ul>
         {users.map((user) => (
           <li key={user.id}>
